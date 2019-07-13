@@ -1,5 +1,3 @@
-import 'dart:html' as prefix0;
-
 import 'package:flutter_web/material.dart';
 
 class RoundedButton extends StatelessWidget {

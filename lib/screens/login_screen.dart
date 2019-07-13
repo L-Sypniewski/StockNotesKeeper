@@ -1,4 +1,5 @@
 import 'package:flutter_web/material.dart';
+import 'package:stock_notes/widgets/RealTimeValidatetTextFormField.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -11,6 +12,21 @@ class LoginScreen extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: <Widget>[
+          RealTimeValidatetTextFormField(
+            formState: _formKey,
+            onGetFocus: () => null,
+            onLoseFocus: () => null,
+            validator: (text) {
+              if (text.isEmpty) {
+                return "Field cannot be empty";
+              }
+              if (text.length > 5) {
+                return "Text is too long";
+              }
+              return null;
+            },
+            onSaved: (text) => null,
+          ),
           TextFormField(
             onSaved: (text) => debugPrint("On field saved 1"),
           ),
@@ -25,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                 // otherwise.
                 if (_formKey.currentState.validate()) {
                   // If the form is valid, display a Snackbar.
-                 _formKey.currentState.save();
+                  _formKey.currentState.save();
                 }
               },
               child: Text('Submit'),
