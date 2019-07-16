@@ -1,5 +1,5 @@
 import 'package:flutter_web/material.dart';
-import 'package:stock_notes/widgets/RealTimeValidatedTextFormField.dart';
+import 'package:stock_notes/widgets/real_time_validated_text_form_field.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key key}) : super(key: key);

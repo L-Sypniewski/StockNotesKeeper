@@ -1,6 +1,6 @@
 import 'package:flutter_web/material.dart';
 import 'package:stock_notes/screens/login_screen.dart';
-import 'package:stock_notes/widgets/RoundedButton.dart';
+import 'package:stock_notes/widgets/rounded_button.dart';
 
 void main() => runApp(MyApp());
 
