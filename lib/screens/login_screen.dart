@@ -1,5 +1,5 @@
 import 'package:flutter_web/material.dart';
-import 'package:stock_notes/widgets/RealTimeValidatetTextFormField.dart';
+import 'package:stock_notes/widgets/RealTimeValidatedTextFormField.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          RealTimeValidatetTextFormField(
+          RealTimeValidatedTextFormField(
             formState: _formKey,
             onGetFocus: () => null,
             onLoseFocus: () => null,

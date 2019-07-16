@@ -34,3 +34,4 @@ doc/api/
 
 *.cache
 *.code-workspace
+firebase-debug.log
