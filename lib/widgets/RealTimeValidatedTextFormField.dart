@@ -10,7 +10,7 @@ class RealTimeValidatedTextFormField extends StatefulWidget {
   final String Function(String) _alwaysPassingValidator = (text) => null;
   final TextEditingController _controller = TextEditingController();
 
-  RealTimeValidatedTextFormField(
+  RealTimeValidatedTextFormField( //TODO - pass TextFormField in constructor and wrap it with RealTimeValidatedTextFormField
       {@required GlobalKey<FormState> formState,
       VoidCallback onGetFocus,
       VoidCallback onLoseFocus,
@@ -30,32 +30,33 @@ class RealTimeValidatedTextFormField extends StatefulWidget {
 class _RealTimeValidatetTextFormFieldState
     extends State<RealTimeValidatedTextFormField> {
   final _focus = FocusNode();
-  var _willBeFocused = true;
-  var _validationCorrect = true;
+  var _isFocused = true;
 
   @override
   void initState() {
     super.initState();
 
-    _focus.addListener(() => _focus.hasFocus
-        ? _gotFocusCallback()
-        : _lostFocusCallback());
+    _focus.addListener(
+        () => _focus.hasFocus ? _gotFocusCallback() : _lostFocusCallback());
 
     widget._controller.addListener(() {
       setState(() {
-        _willBeFocused = true;
+        _isFocused = false;
       });
     });
   }
 
   void _gotFocusCallback() {
+    _setStateAndValidateForm(isFocusedNewValue: true);
+    widget._onGetFocus();
+    _isFocused = false;
+  }
+
+  void _setStateAndValidateForm({@required bool isFocusedNewValue}) {
     setState(() {
-      _willBeFocused = false;
+      _isFocused = isFocusedNewValue;
     });
     _validateForm();
-
-    widget._onGetFocus();
-    _willBeFocused = true;
   }
 
   void _validateForm() {
@@ -63,22 +64,15 @@ class _RealTimeValidatetTextFormFieldState
   }
 
   void _lostFocusCallback() {
-    setState(() {
-      _willBeFocused = true;
-    });
-    _validateForm();
-
+    _setStateAndValidateForm(isFocusedNewValue: false);
     widget._onLoseFocus();
   }
 
   String _validate(String text) {
-    final String validationResult = _willBeFocused
-        ? widget._validator(text) ?? widget._alwaysPassingValidator(text)
-        : widget._alwaysPassingValidator(text);
+    final String validationResult = _isFocused
+        ? widget._alwaysPassingValidator(text)
+        : widget._validator(text) ?? widget._alwaysPassingValidator(text);
 
-    _validationCorrect = validationResult == null;
-    print(
-        'Validation result $_validationCorrect , willBeFocused: $_willBeFocused');
     return validationResult;
   }
 
