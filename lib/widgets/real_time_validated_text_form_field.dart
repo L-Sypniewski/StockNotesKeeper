@@ -10,7 +10,8 @@ class RealTimeValidatedTextFormField extends StatefulWidget {
   final String Function(String) _alwaysPassingValidator = (text) => null;
   final TextEditingController _controller = TextEditingController();
 
-  RealTimeValidatedTextFormField( //TODO - pass TextFormField in constructor and wrap it with RealTimeValidatedTextFormField
+  RealTimeValidatedTextFormField(
+      //TODO - pass TextFormField in constructor and wrap it with RealTimeValidatedTextFormField
       {@required GlobalKey<FormState> formState,
       VoidCallback onGetFocus,
       VoidCallback onLoseFocus,
@@ -31,25 +32,45 @@ class _RealTimeValidatetTextFormFieldState
     extends State<RealTimeValidatedTextFormField> {
   final _focus = FocusNode();
   var _isFocused = true;
+  var _lastText = "";
 
   @override
   void initState() {
     super.initState();
+    print('init');
 
     _focus.addListener(
         () => _focus.hasFocus ? _gotFocusCallback() : _lostFocusCallback());
 
     widget._controller.addListener(() {
-      setState(() {
-        _isFocused = false;
-      });
+      if (_lastText != widget._controller.text) {
+        _onTextChanged();
+      }
+      _lastText = widget._controller.text;
+      print('listnerer');
+      _isFocused = false;
     });
+  }
+
+  void _onTextChanged() {
+    print("Text changed");
+    if (true) {
+      _removeValidationError();
+    }
+
+  }
+
+  void _removeValidationError() {
+    if (!_isFocused) {
+      _setStateAndValidateForm(isFocusedNewValue: true);
+    }
   }
 
   void _gotFocusCallback() {
     _setStateAndValidateForm(isFocusedNewValue: true);
     widget._onGetFocus();
     _isFocused = false;
+    print("_gotFocusCallback");
   }
 
   void _setStateAndValidateForm({@required bool isFocusedNewValue}) {
@@ -66,6 +87,7 @@ class _RealTimeValidatetTextFormFieldState
   void _lostFocusCallback() {
     _setStateAndValidateForm(isFocusedNewValue: false);
     widget._onLoseFocus();
+    print("_lostFocusCallback");
   }
 
   String _validate(String text) {
