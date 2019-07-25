@@ -1,15 +1,6 @@
 import 'package:flutter_web/material.dart';
 
 class RealTimeValidatedTextFormField extends StatefulWidget {
-  final GlobalKey<FormState> _formState;
-  final VoidCallback _onGetFocus;
-  final VoidCallback _onLoseFocus;
-  final Function(String) _onSaved;
-  final String Function(String) _validator;
-
-  final String Function(String) _alwaysPassingValidator = (text) => null;
-  final TextEditingController _controller = TextEditingController();
-
   RealTimeValidatedTextFormField(
       //TODO - pass TextFormField in constructor and wrap it with RealTimeValidatedTextFormField
       {@required GlobalKey<FormState> formState,
@@ -18,11 +9,22 @@ class RealTimeValidatedTextFormField extends StatefulWidget {
       Function(String) onSaved,
       String Function(String) validator})
       : assert(formState != null),
-        _formState = formState,
+        formKey = formState,
         _onGetFocus = onGetFocus,
         _onLoseFocus = onLoseFocus,
         _onSaved = onSaved,
         _validator = validator;
+
+  final TextEditingController _controller = TextEditingController();
+  final GlobalKey<FormState> formKey;
+  final VoidCallback _onGetFocus;
+  final VoidCallback _onLoseFocus;
+
+  final Function(String) _onSaved;
+
+  final String Function(String) _validator;
+
+  final String Function(String) _alwaysPassingValidator = (text) => null;
 
   _RealTimeValidatetTextFormFieldState createState() =>
       _RealTimeValidatetTextFormFieldState();
@@ -37,7 +39,7 @@ class _RealTimeValidatetTextFormFieldState
   @override
   void initState() {
     super.initState();
-    print('Key: ${widget._formState}');
+    print('Key: ${widget.formKey}');
 
     _focus.addListener(
         () => _focus.hasFocus ? _gotFocusCallback() : _lostFocusCallback());
@@ -57,7 +59,6 @@ class _RealTimeValidatetTextFormFieldState
     if (true) {
       _removeValidationError();
     }
-
   }
 
   void _removeValidationError() {
@@ -81,7 +82,7 @@ class _RealTimeValidatetTextFormFieldState
   }
 
   void _validateForm() {
-    widget._formState.currentState.validate();
+    widget.formKey.currentState.validate();
   }
 
   void _lostFocusCallback() {
