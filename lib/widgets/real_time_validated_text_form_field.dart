@@ -37,7 +37,7 @@ class _RealTimeValidatetTextFormFieldState
   @override
   void initState() {
     super.initState();
-    print('init');
+    print('Key: ${widget._formState}');
 
     _focus.addListener(
         () => _focus.hasFocus ? _gotFocusCallback() : _lostFocusCallback());

@@ -6,14 +6,14 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final _formKeys = [GlobalKey<FormState>(), GlobalKey<FormState>()];
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          RealTimeValidatedTextFormField(
-            formState: _formKey,
+    return Column(
+      children: <Widget>[
+        Form(
+          key: _formKeys[0],
+          child: RealTimeValidatedTextFormField(
+            formState: _formKeys[0],
             onGetFocus: () => null,
             onLoseFocus: () => null,
             validator: (text) {
@@ -25,30 +25,49 @@ class LoginScreen extends StatelessWidget {
               }
               return null;
             },
-            onSaved: (text) => null,
+            onSaved: (text) => print("1 saved"),
           ),
-          TextFormField(
-            onSaved: (text) => debugPrint("On field saved 1"),
+        ),
+        Form(
+          key: _formKeys[1],
+          child: RealTimeValidatedTextFormField(
+            formState: _formKeys[1],
+            onGetFocus: () => null,
+            onLoseFocus: () => null,
+            validator: (text) {
+              if (text.isEmpty) {
+                return "Field cannot be empty";
+              }
+              if (!text.contains("@")) {
+                return "Text must contain @";
+              }
+              return null;
+            },
+            onSaved: (text) =>  print("2 saved"),
           ),
-          TextFormField(
-            onSaved: (text) => debugPrint("On field saved 2"),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: RaisedButton(
+            onPressed: () {
+              // Validate returns true if the form is valid, or false
+              // otherwise.
+              final validatedSuccessfully = _formKeys
+                      .map((key) => key.currentState.validate())
+                      .where((validated) => validated)
+                      .toList()
+                      .length ==
+                  _formKeys.length;
+
+              if (validatedSuccessfully) {
+                // If the form is valid, display a Snackbar.
+                _formKeys.forEach((key) => key.currentState.save());
+              }
+            },
+            child: Text('Submit'),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: RaisedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, or false
-                // otherwise.
-                if (_formKey.currentState.validate()) {
-                  // If the form is valid, display a Snackbar.
-                  _formKey.currentState.save();
-                }
-              },
-              child: Text('Submit'),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
