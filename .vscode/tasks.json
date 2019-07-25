@@ -14,6 +14,12 @@
             "type": "shell",
             "group": "test",
             "command": "webdev serve --auto restart"
+        },
+        {
+            "label": "Format code with dartfmt",
+            "type": "shell",
+            "command": "dartfmt lib/ -w",
+            "problemMatcher": []
         }
     ]
 }
