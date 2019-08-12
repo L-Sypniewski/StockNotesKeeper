@@ -1,4 +1,5 @@
 import 'package:flutter_web/material.dart';
+import 'package:stock_notes/persistence/firestore/firestore_stock_database.dart';
 import 'package:stock_notes/widgets/real_time_validated_form.dart';
 import 'package:stock_notes/widgets/real_time_validated_text_form_field.dart';
 
@@ -80,6 +81,7 @@ class LoginScreen extends StatelessWidget {
           child: RaisedButton(
             onPressed: () {
               realTimeForm.save();
+              FirestoreNotesDatabase();
             },
             child: Text('Submit'),
           ),
