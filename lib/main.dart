@@ -2,6 +2,8 @@ import 'package:flutter_web/material.dart';
 import 'package:stock_notes/screens/login_screen.dart';
 import 'package:stock_notes/widgets/rounded_button.dart';
 
+import 'persistence/firestore/firestore_stock_database.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -25,6 +27,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //FirestoreNotesDatabase();
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
